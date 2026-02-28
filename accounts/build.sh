@@ -1,5 +1,8 @@
 set -o errexit
 
+# Change to root directory where requirements.txt is located
+cd "$(dirname "$0")/.."
+
 pip install -r requirements.txt
 
 python manage.py collectstatic --noinput
@@ -15,7 +18,7 @@ python manage.py migrate
 
 if [[ "$CREATE_SUPERUSER" == "True" ]]; then
   python manage.py createsuperuser \
-    --noinput \
+       --noinput \
     --username "$DJANGO_SUPERUSER_USERNAME" \
     --email "$DJANGO_SUPERUSER_EMAIL"
 fi
