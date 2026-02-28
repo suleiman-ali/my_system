@@ -13,5 +13,9 @@ urlpatterns = [
     path('api/bookings/', include('bookings.urls')),
 ]
 
+# Serve media files in development mode
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files in production (handled by WhiteNoise, but needed for admin)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
