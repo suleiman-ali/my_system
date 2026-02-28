@@ -19,7 +19,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-pc-maintenance-secret
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['*']
+# Configure ALLOWED_HOSTS - should be set in environment variables for production
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -148,9 +149,22 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
-# CORS settings
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS settings - Configure properly for production
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', '').split(',') if os.environ.get('CORS_ALLOWED_ORIGINS') else [
+    'http://localhost:3000',  # Development React app
+    'http://localhost:8000',  # Development Django
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
+]
 CORS_ALLOW_CREDENTIALS = True
+
+# CSRF Trusted Origins
+CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if os.environ.get('CSRF_TRUSTED_ORIGINS') else [
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:8000',
+]
 
 # Security settings for production
 if not DEBUG:
