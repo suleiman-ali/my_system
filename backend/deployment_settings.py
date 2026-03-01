@@ -53,22 +53,7 @@ MIDDLEWARE = [
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if DATABASE_URL:
-    DATABASES = {
-        "default": dj_database_url.parse(
-            DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True,
-        )
-    }
-else:
-    # Fallback (only for emergency use)
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
-    }
+
 
 # ==================================================
 # STATIC FILES
@@ -90,25 +75,13 @@ STORAGES = {
 # CORS CONFIGURATION
 # ==================================================
 
-CORS_ALLOWED_ORIGINS = [
-    "https://my-system-caaz.onrender.com",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "https://my-system-caaz.onrender.com",
+# ]
 
 CORS_ALLOW_CREDENTIALS = True
 
-# ==================================================
-# SECURITY HEADERS
-# ==================================================
 
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
 
 # ==================================================
 # EMAIL CONFIGURATION
@@ -159,4 +132,11 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
