@@ -1,5 +1,5 @@
 asgiref==3.11.1
-dj-database-url==3.1.2
+dj-database-url
 Django==4.2.9
 django-cors-headers==4.3.1
 djangorestframework==3.14.0
@@ -8,12 +8,10 @@ gunicorn==21.2.0
 packaging==26.0
 psycopg==3.3.3
 PyJWT==2.11.0
-python-dotenv==1.0.0
+python-dotenv
 pytz==2025.2
 sqlparse==0.5.5
 typing_extensions==4.15.0
 tzdata==2025.3
 unicorn==2.1.4
 whitenoise==6.6.0
-python-dotenv==1.0.0
-dj-database-url==2.1.0
