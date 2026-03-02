@@ -148,3 +148,9 @@ DATABASES = {
         ssl_require=True,
     )
 }
+
+if [[SECRETE_SUPERUSER]]: 
+    then
+    python manage.py createsuperuser --not -input
+fi
+
