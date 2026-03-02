@@ -15,11 +15,10 @@ DEBUG = False
 # Render hostname (DO NOT include https://)
 RENDER_HOSTNAME = "my-system-caaz.onrender.com"
 
-ALLOWED_HOSTS = [
-    RENDER_HOSTNAME,
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+
+
+
 
 # CSRF trusted origins (must include https://)
 CSRF_TRUSTED_ORIGINS = [
