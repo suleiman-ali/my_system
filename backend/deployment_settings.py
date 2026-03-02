@@ -149,8 +149,15 @@ DATABASES = {
     )
 }
 
-if [[SECRETE_SUPERUSER]]: 
-    then
-    python manage.py createsuperuser --not-input
-fi
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+if os.getenv("CREATE_SUPERUSER") == "True":
+    if not User.objects.filter(username=os.getenv("DJANGO_SUPERUSER_USERNAME")).exists():
+        User.objects.create_superuser(
+            os.getenv("DJANGO_SUPERUSER_USERNAME"),
+            os.getenv("DJANGO_SUPERUSER_EMAIL"),
+            os.getenv("DJANGO_SUPERUSER_PASSWORD"),
+        )
 
