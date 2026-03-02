@@ -13,16 +13,25 @@ from .settings import *  # noqa
 DEBUG = False
 
 # Render hostname (DO NOT include https://)
-RENDER_HOSTNAME = "my-system-caaz.onrender.com"
+RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "my-system-1-8al8.onrender.com")
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+# ALLOWED_HOSTS - include both environment variable and Render's hostname
+_render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "")
+_allowed_hosts_env = os.environ.get("ALLOWED_HOSTS", "")
+if _allowed_hosts_env:
+    _hosts_list = _allowed_hosts_env.split(",")
+else:
+    _hosts_list = []
+if _render_hostname and _render_hostname not in _hosts_list:
+    _hosts_list.append(_render_hostname)
+ALLOWED_HOSTS = _hosts_list
 
 
 
 
 # CSRF trusted origins (must include https://)
 CSRF_TRUSTED_ORIGINS = [
-    "https://my-system-caaz.onrender.com",
+    f"https://{RENDER_HOSTNAME}",
 ]
 
 # Secret Key (MUST be set in Render Environment Variables)
@@ -98,7 +107,7 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.environ.get(
     "DEFAULT_FROM_EMAIL",
-    "noreply@my-system-caaz.onrender.com",
+    f"noreply@{RENDER_HOSTNAME}",
 )
 
 # ==================================================
