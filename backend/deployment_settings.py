@@ -83,10 +83,15 @@ STORAGES = {
 # CORS CONFIGURATION
 # ==================================================
 
-CORS_ALLOWED_ORIGINS = [
-     "https://my-system-caaz.onrender.com",
-     "https://pc-maintanance-management-system-3.onrender.com",
-]
+# Get CORS origins from environment variable or use default Render hostname
+_cors_origins_env = os.environ.get("CORS_ALLOWED_ORIGINS", "")
+if _cors_origins_env:
+    CORS_ALLOWED_ORIGINS = _cors_origins_env.split(",")
+else:
+    # Default to the Render hostname for now
+    CORS_ALLOWED_ORIGINS = [
+        f"https://{RENDER_HOSTNAME}",
+    ]
 
 CORS_ALLOW_CREDENTIALS = True
 
