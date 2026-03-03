@@ -20,18 +20,9 @@ python manage.py migrate --noinput
 echo "[3/4] Collecting static files..."
 python manage.py collectstatic --noinput
 
-# Create superuser if requested (optional)
-if [[ "$CREATE_SUPERUSER" == "True" ]]; then
-  echo "[4/4] Creating superuser..."
-  # Set password via environment variable to avoid interactive prompt
-  export DJANGO_SUPERUSER_PASSWORD="${DJANGO_SUPERUSER_PASSWORD:-}"
-  echo "from django.contrib.auth import get_user_model; User = get_user_model(); 
-if not User.objects.filter(username='$DJANGO_SUPERUSER_USERNAME').exists():
-    User.objects.create_superuser(
-        username='$DJANGO_SUPERUSER_USERNAME',
-        email='$DJANGO_SUPERUSER_EMAIL',
-        password='$DJANGO_SUPERUSER_PASSWORD'
-    )" | python manage.py shell
+if [[SCREATE_SUPERUSER]]
+then
+    python manage.py createsuperuser --noinput 
 fi
 
 echo "=========================================="
