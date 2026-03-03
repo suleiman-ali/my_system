@@ -20,7 +20,7 @@ python manage.py migrate --noinput
 echo "[3/4] Collecting static files..."
 python manage.py collectstatic --noinput
 
-if [[SCREATE_SUPERUSER]]
+if [[SCREATE_SUPERUSER]];
 then
     python manage.py createsuperuser --noinput 
 fi
