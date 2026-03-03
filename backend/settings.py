@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load environment variables
 load_dotenv()
@@ -115,17 +116,15 @@ STORAGES = {
     },
 }
 
-# Database - Support for PostgreSQL on Render
-if os.environ.get('DATABASE_URL'):
+# Database - Support for PostgreSQL on Render via DATABASE_URL
+database_url = os.environ.get('DATABASE_URL')
+if database_url:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME', 'renderDB'),
-            'USER': os.environ.get('DB_USER', 'render_user'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': os.environ.get('DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
-        }
+        'default': dj_database_url.parse(
+            database_url,
+            conn_max_age=600,
+            ssl_require=not DEBUG,
+        )
     }
 
 # Media files
