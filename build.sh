@@ -20,9 +20,15 @@ python manage.py migrate --noinput
 echo "[3/4] Collecting static files..."
 python manage.py collectstatic --noinput
 
+# Create superuser only if CREATE_SUPERUSER=true AND all env vars are set
 if [[ "${CREATE_SUPERUSER,,}" == "true" ]]; then
     echo "[4/4] Creating/updating deployment superuser..."
-    python manage.py shell -c "
+    
+    if [[ -z "${DJANGO_SUPERUSER_USERNAME}" ]] || [[ -z "${DJANGO_SUPERUSER_EMAIL}" ]] || [[ -z "${DJANGO_SUPERUSER_PASSWORD}" ]]; then
+        echo "WARNING: Skipping superuser creation. Missing required environment variables."
+        echo "Set CREATE_SUPERUSER=true and provide DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_EMAIL, DJANGO_SUPERUSER_PASSWORD"
+    else
+        python manage.py shell -c "
 from django.contrib.auth import get_user_model
 import os
 
@@ -30,9 +36,6 @@ User = get_user_model()
 username = os.environ.get('DJANGO_SUPERUSER_USERNAME')
 email = os.environ.get('DJANGO_SUPERUSER_EMAIL')
 password = os.environ.get('DJANGO_SUPERUSER_PASSWORD')
-
-if not username or not email or not password:
-    raise SystemExit('Missing DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_EMAIL, or DJANGO_SUPERUSER_PASSWORD')
 
 user, created = User.objects.get_or_create(username=username, defaults={'email': email})
 user.email = email
@@ -45,6 +48,9 @@ user.save()
 
 print('Superuser created' if created else 'Superuser updated')
 "
+    fi
+else
+    echo "[4/4] Skipping superuser creation (CREATE_SUPERUSER not set to true)"
 fi
 
 echo "=========================================="
