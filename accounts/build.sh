@@ -10,6 +10,7 @@ python manage.py collectstatic --noinput
 python manage.py migrate --noinput
 
 if [[ "${CREATE_SUPERUSER,,}" == "true" ]]; then
-    py manage.py create_superuser --noinput --username "$DJANGO_SUPERUSER_USERNAME" --email "$DJANGO_SUPERUSER_EMAIL" || true
+    py manage.py create_superuser --noinput 
+    
 "
 fi
