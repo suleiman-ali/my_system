@@ -83,9 +83,10 @@ STORAGES = {
 # CORS CONFIGURATION
 # ==================================================
 
-# CORS_ALLOWED_ORIGINS = [
-#     "https://my-system-caaz.onrender.com",
-# ]
+CORS_ALLOWED_ORIGINS = [
+     "https://my-system-caaz.onrender.com",
+     "https://pc-maintanance-management-system-3.onrender.com",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
