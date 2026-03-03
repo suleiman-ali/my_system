@@ -14,7 +14,7 @@ DEBUG = False
 
 # Render hostname (DO NOT include https://)
 RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "my-system-1-8al8.onrender.com")
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://my-react-kb5f.onrender.com").rstrip("/")
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://my-sistems.vercel.app").rstrip("/")
 
 # ALLOWED_HOSTS - include both environment variable and Render's hostname
 _render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "")
