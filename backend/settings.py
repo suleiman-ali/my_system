@@ -20,8 +20,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-pc-maintenance-secret
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Configure ALLOWED_HOSTS - should be set in environment variables for production
-ALLOWED_HOSTS = ["*"]
+# Configure ALLOWED_HOSTS
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -126,6 +126,8 @@ if database_url:
             ssl_require=not DEBUG,
         )
     }
+elif not DEBUG:
+    raise ValueError('DATABASE_URL is required when DEBUG=False')
 
 # Media files
 MEDIA_URL = 'media/'
