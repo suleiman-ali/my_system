@@ -115,6 +115,8 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+# Prevent 500 errors if a static file is missing from the manifest in production.
+WHITENOISE_MANIFEST_STRICT = False
 
 # Database - Support for PostgreSQL on Render via DATABASE_URL
 database_url = os.environ.get('DATABASE_URL')
