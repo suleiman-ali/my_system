@@ -12,12 +12,22 @@ echo "=========================================="
 echo "[1/4] Installing Python dependencies..."
 pip install -r requirements.txt
 
-# Sync migration history after app merge (accounts/services/bookings -> core)
-echo "[2/5] Syncing migration history..."
+# Sync migration history after app merge only when legacy tables already exist.
+echo "[2/5] Checking migration history..."
 python manage.py shell -c "
+from django.db import connection
 from django.db.migrations.recorder import MigrationRecorder
-MigrationRecorder.Migration.objects.get_or_create(app='core', name='0001_initial')
-print('Migration history synced for core.0001_initial')
+
+existing_tables = set(connection.introspection.table_names())
+legacy_tables_exist = {'users', 'services', 'bookings'}.issubset(existing_tables)
+admin_applied = MigrationRecorder.Migration.objects.filter(app='admin', name='0001_initial').exists()
+core_applied = MigrationRecorder.Migration.objects.filter(app='core', name='0001_initial').exists()
+
+if legacy_tables_exist and admin_applied and not core_applied:
+    MigrationRecorder.Migration.objects.create(app='core', name='0001_initial')
+    print('Synced core.0001_initial for legacy database')
+else:
+    print('No migration history sync needed')
 "
 
 # Run migrations (NO makemigrations in production - migrations should be committed)

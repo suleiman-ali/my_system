@@ -13,8 +13,8 @@ from .settings import *  # noqa
 DEBUG = False
 
 # Render hostname (DO NOT include https://)
-RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "my-system-1-8al8.onrender.com")
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://my-sistems.vercel.app").rstrip("/")
+RENDER_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "my-system-udnx.onrender.com")
+FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://my-sistem-chi.vercel.app").rstrip("/")
 
 # ALLOWED_HOSTS - include both environment variable and Render's hostname
 _render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME", "")
@@ -38,6 +38,7 @@ else:
     CSRF_TRUSTED_ORIGINS = [
         f"https://{RENDER_HOSTNAME}",
         FRONTEND_URL,
+        "https://*.vercel.app",
     ]
 
 # Secret Key (MUST be set in Render Environment Variables)
@@ -97,14 +98,13 @@ _cors_origins_env = os.environ.get("CORS_ALLOWED_ORIGINS", "")
 if _cors_origins_env:
     CORS_ALLOWED_ORIGINS = [origin.strip() for origin in _cors_origins_env.split(",") if origin.strip()]
 else:
-    # Default to configured frontend URL plus common Vercel domains
+    # Default to configured frontend URL
     CORS_ALLOWED_ORIGINS = [
         FRONTEND_URL,
-        "https://*.vercel.app",
-        "https://vercel.app",
     ]
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGIN_REGEXES = [r"^https://.*\.vercel\.app$"]
 
 
 
