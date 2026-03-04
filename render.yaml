@@ -24,13 +24,13 @@ services:
       - key: CSRF_TRUSTED_ORIGINS
         value: https://my-system-frontend.onrender.com
       - key: CREATE_SUPERUSER
-        value: "False"
+        value: "True"
       - key: DJANGO_SUPERUSER_USERNAME
-        sync: false
+        value: Admin
       - key: DJANGO_SUPERUSER_EMAIL
-        sync: false
+        value: admin@example.com
       - key: DJANGO_SUPERUSER_PASSWORD
-        sync: false
+        value: Admin@1234
 
 
 
