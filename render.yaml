@@ -14,7 +14,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        value: postgresql://neondb_owner:npg_zYVWMZdye5r7@ep-small-art-aigcmjw1-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+        value: 'postgresql://neondb_owner:npg_zYVWMZdye5r7@ep-small-art-aigcmjw1-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require'
       - key: FRONTEND_URL
         value: https://my-system-frontend.onrender.com
       - key: ALLOWED_HOSTS
@@ -31,6 +31,7 @@ services:
         sync: false
       - key: DJANGO_SUPERUSER_PASSWORD
         sync: false
+
 
 
 

@@ -117,7 +117,12 @@ STORAGES = {
 WHITENOISE_MANIFEST_STRICT = False
 
 # Database - Support for PostgreSQL on Render via DATABASE_URL
-database_url = os.environ.get('DATABASE_URL')
+FALLBACK_DATABASE_URL = (
+    'postgresql://neondb_owner:npg_zYVWMZdye5r7@'
+    'ep-small-art-aigcmjw1-pooler.c-4.us-east-1.aws.neon.tech/'
+    'neondb?sslmode=require&channel_binding=require'
+)
+database_url = os.environ.get('DATABASE_URL', FALLBACK_DATABASE_URL)
 if database_url:
     DATABASES = {
         'default': dj_database_url.parse(
