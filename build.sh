@@ -19,15 +19,19 @@ from django.db import connection
 from django.db.migrations.recorder import MigrationRecorder
 
 existing_tables = set(connection.introspection.table_names())
+has_migration_table = 'django_migrations' in existing_tables
 legacy_tables_exist = {'users', 'services', 'bookings'}.issubset(existing_tables)
-admin_applied = MigrationRecorder.Migration.objects.filter(app='admin', name='0001_initial').exists()
-core_applied = MigrationRecorder.Migration.objects.filter(app='core', name='0001_initial').exists()
-
-if legacy_tables_exist and admin_applied and not core_applied:
-    MigrationRecorder.Migration.objects.create(app='core', name='0001_initial')
-    print('Synced core.0001_initial for legacy database')
+if not has_migration_table:
+    print('Skipping migration history sync (django_migrations table not created yet)')
 else:
-    print('No migration history sync needed')
+    admin_applied = MigrationRecorder.Migration.objects.filter(app='admin', name='0001_initial').exists()
+    core_applied = MigrationRecorder.Migration.objects.filter(app='core', name='0001_initial').exists()
+
+    if legacy_tables_exist and admin_applied and not core_applied:
+        MigrationRecorder.Migration.objects.create(app='core', name='0001_initial')
+        print('Synced core.0001_initial for legacy database')
+    else:
+        print('No migration history sync needed')
 "
 
 # Run migrations (NO makemigrations in production - migrations should be committed)
