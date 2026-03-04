@@ -36,9 +36,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     # Local apps
-    'accounts',
-    'services',
-    'bookings',
+    'core',
 ]
 
 MIDDLEWARE = [
@@ -139,7 +137,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom User Model
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'core.User'
 
 # REST Framework settings
 REST_FRAMEWORK = {

@@ -12,17 +12,25 @@ echo "=========================================="
 echo "[1/4] Installing Python dependencies..."
 pip install -r requirements.txt
 
+# Sync migration history after app merge (accounts/services/bookings -> core)
+echo "[2/5] Syncing migration history..."
+python manage.py shell -c "
+from django.db.migrations.recorder import MigrationRecorder
+MigrationRecorder.Migration.objects.get_or_create(app='core', name='0001_initial')
+print('Migration history synced for core.0001_initial')
+"
+
 # Run migrations (NO makemigrations in production - migrations should be committed)
-echo "[2/4] Running database migrations..."
-python manage.py migrate --noinput
+echo "[3/5] Running database migrations..."
+python manage.py migrate --noinput --fake-initial
 
 # Collect static files for WhiteNoise
-echo "[3/4] Collecting static files..."
+echo "[4/5] Collecting static files..."
 python manage.py collectstatic --noinput
 
 # Create superuser only if CREATE_SUPERUSER=true AND all env vars are set
 if [[ "${CREATE_SUPERUSER,,}" == "true" ]]; then
-    echo "[4/4] Creating/updating deployment superuser..."
+    echo "[5/5] Creating/updating deployment superuser..."
     
     if [[ -z "${DJANGO_SUPERUSER_USERNAME}" ]] || [[ -z "${DJANGO_SUPERUSER_EMAIL}" ]] || [[ -z "${DJANGO_SUPERUSER_PASSWORD}" ]]; then
         echo "WARNING: Skipping superuser creation. Missing required environment variables."
@@ -50,7 +58,7 @@ print('Superuser created' if created else 'Superuser updated')
 "
     fi
 else
-    echo "[4/4] Skipping superuser creation (CREATE_SUPERUSER not set to true)"
+    echo "[5/5] Skipping superuser creation (CREATE_SUPERUSER not set to true)"
 fi
 
 echo "=========================================="
