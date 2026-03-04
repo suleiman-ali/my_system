@@ -14,17 +14,15 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        fromDatabase:
-          name: my-system-db
-          property: connectionString
+        value: postgresql://neondb_owner:npg_zYVWMZdye5r7@ep-small-art-aigcmjw1-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       - key: FRONTEND_URL
-        sync: false
+        value: https://my-system-frontend.onrender.com
       - key: ALLOWED_HOSTS
-        sync: false
+        value: my-system-backend.onrender.com
       - key: CORS_ALLOWED_ORIGINS
-        sync: false
+        value: https://my-system-frontend.onrender.com
       - key: CSRF_TRUSTED_ORIGINS
-        sync: false
+        value: https://my-system-frontend.onrender.com
       - key: CREATE_SUPERUSER
         value: "False"
       - key: DJANGO_SUPERUSER_USERNAME
@@ -34,6 +32,5 @@ services:
       - key: DJANGO_SUPERUSER_PASSWORD
         sync: false
 
-databases:
-  - name: my-system-db
+
 
