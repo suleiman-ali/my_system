@@ -14,7 +14,9 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        sync: false
+        fromDatabase:
+          name: my-system-db
+          property: connectionString
       - key: FRONTEND_URL
         sync: false
       - key: ALLOWED_HOSTS
@@ -31,4 +33,7 @@ services:
         sync: false
       - key: DJANGO_SUPERUSER_PASSWORD
         sync: false
+
+databases:
+  - name: my-system-db
 
