@@ -2,6 +2,7 @@ services:
   - type: web
     name: my-system-backend
     env: python
+    plan: free
     rootDir: .
     buildCommand: ./build.sh
     startCommand: gunicorn backend.wsgi:application --log-file -
@@ -30,3 +31,4 @@ services:
         sync: false
       - key: DJANGO_SUPERUSER_PASSWORD
         sync: false
+
