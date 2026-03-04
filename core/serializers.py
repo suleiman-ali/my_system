@@ -18,7 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password = serializers.CharField(write_only=True, required=True, min_length=6)
     password_confirm = serializers.CharField(write_only=True, required=True)
 
     class Meta:
@@ -29,8 +29,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
+        attrs['username'] = attrs['username'].strip()
+        attrs['email'] = attrs['email'].strip().lower()
+
         if attrs['password'] != attrs['password_confirm']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
+
+        # Keep registration practical in production; enforce only a basic minimum length.
+        if len(attrs['password']) < 6:
+            raise serializers.ValidationError({"password": "Password must be at least 6 characters long."})
+
         return attrs
 
     def create(self, validated_data):
